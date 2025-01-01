@@ -38,6 +38,50 @@
 
 
 
+# Exec
+
+
+<br><br>
+
+## Run external cli with sudo and ask user for password prompt
+- Will ask for password. You can use this aswell in electron.js
+```javascript
+const sudo = require('sudo-prompt');
+
+const sudoOptions = {
+    name: 'Secure File Vault'
+};
+
+// Promisified sudo exec
+function sudoExec(command) {
+    return new Promise((resolve, reject) => {
+        sudo.exec(command, sudoOptions, (error, stdout, stderr) => {
+            if (error) reject(error);
+            else resolve(stdout);
+        });
+    });
+}
+
+await sudoExec(`veracrypt --text --create "${containerPath}" --size "${containerSize}" --password "${password}" --encryption AES --hash sha512 --filesystem FAT --non-interactive`);
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
