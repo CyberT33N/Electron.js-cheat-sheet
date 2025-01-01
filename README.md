@@ -702,6 +702,7 @@ app.whenReady().then(fn);
 ## BrowserWindow
 - https://www.electronjs.org/docs/latest/api/browser-window
 
+
 <details><summary>Click to expand..</summary>
 
 ```javascript
@@ -718,7 +719,82 @@ win.loadFile('index.html')
 ```
 
 
+# BrowserWindow Constructor Options
 
+## webPreferences (WebPreferences) - Optional
+Settings of web page's features:
+
+- **devTools** (boolean) - Enable DevTools. Default: `true`
+- **nodeIntegration** (boolean) - Enable node integration. Default: `false`
+- **nodeIntegrationInWorker** (boolean) - Enable node integration in web workers. Default: `false`
+- **nodeIntegrationInSubFrames** (boolean) - Experimental option for Node.js support in sub-frames (iframes/child windows)
+- **preload** (string) - Script loaded before other page scripts. Requires absolute file path
+- **sandbox** (boolean) - Sandbox the renderer, making it compatible with Chromium OS-level sandbox
+- **session** (Session) - Sets page session. Preferred over partition option
+- **partition** (string) - Sets session by partition string. Use `persist:` prefix for persistent sessions
+- **zoomFactor** (number) - Default page zoom factor (1.0 = 100%). Default: `1.0`
+- **javascript** (boolean) - Enable JavaScript support. Default: `true`
+- **webSecurity** (boolean) - Enable same-origin policy. Default: `true`
+- **allowRunningInsecureContent** (boolean) - Allow HTTPS pages to run content from HTTP. Default: `false`
+- **images** (boolean) - Enable image support. Default: `true`
+- **imageAnimationPolicy** (string) - Image animation behavior (`animate`|`animateOnce`|`noAnimation`). Default: `animate`
+- **textAreasAreResizable** (boolean) - Make TextArea elements resizable. Default: `true`
+- **webgl** (boolean) - Enable WebGL support. Default: `true`
+- **plugins** (boolean) - Enable plugins. Default: `false`
+- **experimentalFeatures** (boolean) - Enable Chromium experimental features. Default: `false`
+- **scrollBounce** (boolean) - Enable scroll bounce on macOS. Default: `false`
+- **enableBlinkFeatures** (string) - Comma-separated feature list to enable
+- **disableBlinkFeatures** (string) - Comma-separated feature list to disable
+
+#### Default Font Settings
+- **defaultFontFamily** (Object)
+  - `standard`: Times New Roman
+  - `serif`: Times New Roman
+  - `sansSerif`: Arial
+  - `monospace`: Courier New
+  - `cursive`: Script
+  - `fantasy`: Impact
+  - `math`: Latin Modern Math
+
+#### Font Sizes
+- **defaultFontSize** (Integer) - Default: `16`
+- **defaultMonospaceFontSize** (Integer) - Default: `13`
+- **minimumFontSize** (Integer) - Default: `0`
+
+#### Additional Settings
+- **defaultEncoding** (string) - Default: `ISO-8859-1`
+- **backgroundThrottling** (boolean) - Throttle background animations/timers. Default: `true`
+- **contextIsolation** (boolean) - Run Electron APIs in separate JavaScript context. Default: `true`
+- **webviewTag** (boolean) - Enable `<webview>` tag. Default: `false`
+- **spellcheck** (boolean) - Enable built-in spellchecker. Default: `true`
+- **enableWebSQL** (boolean) - Enable WebSQL API. Default: `true`
+
+#### Security & Dialog Options
+- **safeDialogs** (boolean) - Enable consecutive dialog protection. Default: `false`
+- **safeDialogsMessage** (string) - Message for consecutive dialog protection
+- **disableDialogs** (boolean) - Disable all dialogs. Default: `false`
+- **navigateOnDragDrop** (boolean) - Navigate on file/link drag and drop. Default: `false`
+
+#### Advanced Options
+- **v8CacheOptions** (string) - V8 code caching policy (`none`|`code`|`bypassHeatCheck`|`bypassHeatCheckAndEagerCompile`)
+- **enablePreferredSizeMode** (boolean) - Enable preferred size mode. Default: `false`
+- **transparent** (boolean) - Enable background transparency. Default: `true`
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br>
 <br><br>
 
 ### Events
