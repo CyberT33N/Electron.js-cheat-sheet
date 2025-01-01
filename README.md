@@ -1,1 +1,1 @@
-# Electron.js-cheat-sheet
+# Electron.js Cheat Sheet
