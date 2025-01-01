@@ -103,6 +103,7 @@ ____
 
 <details><summary>Click to expand..</summary>
 
+
 # Example for drag and drop
 - When you click the button #process-button the click event listener will trigger and use `ipcRenderer.send()` to send a message to the event `process-files` which ist started inside of main.js
 
@@ -577,7 +578,21 @@ ipcRenderer.on('process-error', (event, { error }) => {
 
 
 
+
+
+
+
+
+
+
+
 </details>
+
+
+
+
+
+
 
 
 
@@ -602,6 +617,39 @@ ipcRenderer.on('process-error', (event, { error }) => {
 - The ipcMain module is an Event Emitter. When used in the main process, it handles asynchronous and synchronous messages sent from a renderer process (web page). Messages sent from a renderer will be emitted to this module.
 
 <details><summary>Click to expand..</summary>
+
+
+
+## Custom Listener
+```
+// Handle file encryption and compression
+    ipcMain.on('process-files', async (event, { files, password }) => {
+        try {
+            //..
+            event.reply('process-status', { 
+                status: 'complete',
+                message: 'Files have been successfully encrypted and compressed.'
+            });
+            
+        } catch (error) {
+            console.error('Error in process-files:', error);
+            event.reply('process-error', { 
+                error: error.message,
+                details: error.stack
+            });
+        }
+    });
+```
+- You can use `event` to display alerts in the UI
+
+
+
+
+
+
+
+
+
 
 <br><br>
 
