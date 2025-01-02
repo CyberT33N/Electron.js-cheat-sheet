@@ -36,11 +36,78 @@
 
 
 
+<br><br>
+<br><br>
+________
+________
+<br><br>
+<br><br>
+
+# External dependencies
+
+<details><summary>Click to expand..</summary>
+
+## electron-reloader (HOT Reload)
+- Add to your main file:
+```javascript
+// Enable hot reload for development
+try {
+  require('electron-reloader')(module, {
+    debug: true,
+    watchRenderer: true
+  });
+} catch (_) { console.log('Error loading electron-reloader'); }
+```
+
+Then as usually run npm start:
+```javascript
+ "scripts": {
+    "start": "DISPLAY=:0 electron . --no-sandbox",
+    "dev": "DISPLAY=:0 electron . --no-sandbox --inspect"
+  },
+```
+
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br>
+<br><br>
+________
+________
+<br><br>
+<br><br>
+
 
 
 # Exec
 
-
+<details><summary>Click to expand..</summary>
+  
 <br><br>
 
 ## Run external cli with sudo and ask user for password prompt
@@ -65,7 +132,7 @@ function sudoExec(command) {
 await sudoExec(`veracrypt --text --create "${containerPath}" --size "${containerSize}" --password "${password}" --encryption AES --hash sha512 --filesystem FAT --non-interactive`);
 ```
 
-
+</details>
 
 
 
