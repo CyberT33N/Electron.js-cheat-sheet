@@ -728,6 +728,20 @@ app.on('window-all-closed', () => {
 
 ### Events
 
+#### before-quit
+- Do something when electron app is closed
+```javascript
+ app.on('before-quit', () => {
+    try {
+        if (fs.existsSync('/tmp/CMCU')) {
+            fs.removeSync('/tmp/CMCU');
+        }
+    } catch (error) {
+        console.error('Error cleaning up /tmp/CMCU:', error);
+    }
+});
+```
+
 <br><br>
 
 #### window-all-closed
