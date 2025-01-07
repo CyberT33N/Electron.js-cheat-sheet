@@ -1029,6 +1029,7 @@ win.once('ready-to-show', () => {
 <br><br>
 
 #### close
+- Will be triggered when the x button is pressed. The Windows session is programmatacily still avaialble and can be used
 ```javascript
 win.on('closed', () => {
     mainWindow = null;
