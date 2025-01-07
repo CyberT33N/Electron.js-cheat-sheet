@@ -892,6 +892,45 @@ win.loadFile('index.html')
 ```
 
 
+
+
+
+
+# Start full width and height
+```javascript
+let mainWindow = null
+
+function createWindow() {
+    const primaryDisplay = screen.getPrimaryDisplay()
+    const { width, height } = primaryDisplay.workAreaSize
+
+    mainWindow = new BrowserWindow({
+        width: width,
+        height: height,
+        frame: false,
+        webPreferences: {
+            nodeIntegration: false,
+            contextIsolation: true,
+            preload: path.join(__dirname, 'preload.js')
+        }
+    })
+
+    // Load the app
+    if (isDev) {
+        mainWindow.loadURL('http://localhost:5173')
+        mainWindow.webContents.openDevTools()
+    } else {
+        mainWindow.loadFile(path.join(__dirname, 'dist', 'index.html'))
+    }
+}
+```
+
+
+
+
+
+<br><br>
+
 # BrowserWindow Constructor Options
 
 ## webPreferences (WebPreferences) - Optional
@@ -967,6 +1006,11 @@ Settings of web page's features:
 
 
 
+
+
+
+
+
 <br><br>
 <br><br>
 
@@ -990,6 +1034,7 @@ win.on('closed', () => {
     mainWindow = null;
 });
 ```
+
 
 
 </details>
