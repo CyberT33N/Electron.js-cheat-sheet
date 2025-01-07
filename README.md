@@ -161,8 +161,38 @@ ____
 
 # API
 
+## dialog
+- https://www.electronjs.org/docs/latest/api/dialog
+- Display native system dialogs for opening and saving files, alerting, etc.
+
+<details><summary>Click to expand..</summary>
+
+```javascript
+  mainWindow.on('close', async(event) => {
+        if (hasQuit) return // Skip if we've already started quitting
+        event.preventDefault() // Prevent window from closing immediately
+        
+        // Show native dialog box
+        await dialog.showMessageBox(mainWindow, {
+            type: 'warning',
+            title: 'Administrator Rechte',
+            message: 'Administratorrechte werden benötigt um VeraCrypt Einträge zu bereinigen',
+            buttons: ['OK'],
+            defaultId: 0,
+            noLink: true
+        })
+        
+        hasQuit = true
+        app.quit()
+    })
+
+```
 
 
+</details>
+  
+<br><br>
+<br><br>
 
 ## ipcRenderer
 - https://www.electronjs.org/de/docs/latest/api/ipc-renderer
