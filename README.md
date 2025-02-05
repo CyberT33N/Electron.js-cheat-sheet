@@ -943,9 +943,6 @@ ipcMain.on('close-window', () => {
 
 
 
-</details>
-
-
 
 
 
@@ -1036,6 +1033,7 @@ app.whenReady().then(fn);
 
 
 
+</details>
 
 
 
@@ -1056,6 +1054,13 @@ app.whenReady().then(fn);
 
 
 
+
+
+
+
+<br><br>
+<br><br>
+____
 <br><br>
 <br><br>
 
