@@ -161,6 +161,11 @@ ____
 
 # API
 
+<details><summary>Click to expand..</summary>
+
+
+
+
 ## dialog
 - https://www.electronjs.org/docs/latest/api/dialog
 - Display native system dialogs for opening and saving files, alerting, etc.
@@ -190,6 +195,156 @@ ____
 
 
 </details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+<br><br>
+<br><br>
+
+## shell
+- https://www.electronjs.org/docs/latest/api/shell
+
+<details><summary>Click to expand..</summary>
+
+
+
+# showItemInFolder
+- https://www.electronjs.org/docs/latest/api/shell#shellshowiteminfolderfullpath
+
+<details><summary>Click to expand..</summary>
+
+1. preload.js - Bridge zwischen Renderer und Main Process
+```javascript
+const { contextBridge, ipcRenderer, shell } = require('electron')
+
+contextBridge.exposeInMainWorld('electron', {
+    // Andere API Methoden...
+    send: (channel, data) => {
+        ipcRenderer.send(channel, data)
+    },
+    receive: (channel, func) => {
+        const subscription = (event, ...args) => func(...args)
+        ipcRenderer.on(channel, subscription)
+        return () => ipcRenderer.removeListener(channel, subscription)
+    }
+})
+```
+
+2. main.js - Main Process Handler
+```javascript
+import { app, ipcMain, shell } from 'electron'
+import fs from 'fs-extra'
+
+// IPC Handler für das Öffnen von Ordnern
+ipcMain.on('open-folder', async (event, filePath) => {
+    try {
+        if (!fs.existsSync(filePath)) {
+            console.error('Datei existiert nicht:', filePath)
+            event.reply('open-folder-error', 'Datei existiert nicht')
+            return
+        }
+        shell.showItemInFolder(filePath)
+    } catch (error) {
+        console.error('Fehler beim Öffnen des Ordners:', error)
+        event.reply('open-folder-error', error.message)
+    }
+})
+```
+
+3. React Komponente
+```javascript
+import React from 'react'
+
+export const MyComponent = React.memo(({ filePath }) => {
+    // Error Handler für Fehler beim Öffnen
+    React.useEffect(() => {
+        if (!window.electron) return
+
+        const cleanup = window.electron.receive('open-folder-error', (errorMessage) => {
+            console.error('Fehler beim Öffnen des Ordners:', errorMessage)
+        })
+
+        return () => cleanup && cleanup()
+    }, [])
+
+    // Click Handler für den Button
+    const handleOpenFolder = React.useCallback((path) => {
+        if (!window.electron) {
+            console.error('Electron API nicht verfügbar')
+            return
+        }
+        window.electron.send('open-folder', path)
+    }, [])
+
+    return (
+        <button
+            onClick={() => handleOpenFolder(filePath)}
+            title="Open containing folder"
+        >
+            <i className="fas fa-folder-open"></i>
+        </button>
+    )
+})
+```
+
+4. Font Awesome einbinden (für das Icon)
+```css
+// In index.html:
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+// 5. Optional: CSS für den Button
+.open-folder-button {
+    background: linear-gradient(145deg, rgba(64, 192, 255, 0.1), rgba(64, 192, 255, 0.2));
+    color: #40c0ff;
+    border: 1px solid rgba(64, 192, 255, 0.3);
+    padding: 0.4em 0.8em;
+    border-radius: 0.3em;
+    font-size: 0.8rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.open-folder-button:hover {
+    background: linear-gradient(145deg, rgba(64, 192, 255, 0.2), rgba(64, 192, 255, 0.3));
+    box-shadow: 0 0 15px rgba(64, 192, 255, 0.2);
+}
+```
+</details>
+
+
+
+
+
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   
 <br><br>
 <br><br>
@@ -787,6 +942,8 @@ ipcMain.on('close-window', () => {
 </details>
 
 
+
+</details>
 
 
 
