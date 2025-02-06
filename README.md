@@ -36,6 +36,10 @@
 
 
 
+
+
+
+
 <br><br>
 <br><br>
 ________
@@ -46,6 +50,18 @@ ________
 # External dependencies
 
 <details><summary>Click to expand..</summary>
+
+
+## electron-vite
+- https://electron-vite.org/guide/
+
+
+
+
+
+
+<br><br>
+<br><br>
 
 ## electron-reloader (HOT Reload)
 - Add to your main file:
