@@ -1,5 +1,31 @@
 # Electron.js Cheat Sheet
 
+
+
+## Good 2 Know
+- **Use directly [electron-vite](https://github.com/CyberT33N/electron-vite-cheat-sheet/blob/main/README.md)**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br>
+<br><br>
+___
+<br><br>
+<br><br>
+
+
+
 # package.json
 
 <details><summary>Click to expand..</summary>
