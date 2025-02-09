@@ -1669,6 +1669,7 @@ win.on('closed', () => {
 
 
 
+</details>
 
 
 
