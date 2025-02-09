@@ -155,7 +155,6 @@ ________
 
 
 
-
 <br><br>
 <br><br>
 
@@ -1714,10 +1713,198 @@ ___
 
 
 
+
+
+Der Unterschied zwischen **Electron Forge** und **electron-builder** liegt hauptsächlich in ihrem Ansatz für das Packaging und die Distribution von Electron-Apps:
+
+### **Electron Forge**  
+🔹 **Ziel**: All-in-One-Tool zur Entwicklung, Verpackung und Veröffentlichung von Electron-Apps.  
+🔹 **Vorteile**:
+   - Bietet eine **strukturierte Projektvorlage** mit Boilerplates.
+   - Unterstützt **verschiedene Kompilationssysteme** (z. B. Webpack, TypeScript).
+   - Integrierte **Updater- und Publisher-Funktionen** für GitHub, S3, etc.
+   - **Modular aufgebaut**: Plugins für verschiedene Build-Systeme.  
+🔹 **Nachteile**:
+   - Weniger Anpassungsmöglichkeiten bei den generierten Installern.  
+   - **Nicht so ausgereift** wie electron-builder für komplexe Deployment-Szenarien.  
+
+---
+
+### **electron-builder**  
+🔹 **Ziel**: Hochgradig konfigurierbares Tool zur Paketierung und Verteilung von Electron-Apps.  
+🔹 **Vorteile**:
+   - **Unterstützt viele Formate**: `.exe`, `.dmg`, `.deb`, `.AppImage`, Snap, etc.  
+   - Sehr **anpassbare Konfiguration** über `package.json` oder `electron-builder.yml`.  
+   - **Integrierter Auto-Update-Support** für eigene Server, GitHub Releases, S3, etc.  
+   - **Schneller und stabiler** bei der Erstellung großer Builds.  
+🔹 **Nachteile**:
+   - Keine vorgefertigten Templates oder Dev-Tools wie Electron Forge.  
+   - **Komplexere Konfiguration** erforderlich.  
+
+---
+
+### **Fazit**  
+📌 **Nutze Electron Forge**, wenn du eine **einfache, standardisierte Lösung** suchst, um eine Electron-App zu entwickeln, zu packagen und zu veröffentlichen.  
+📌 **Nutze electron-builder**, wenn du eine **maximal anpassbare Lösung** für die Erstellung von Installern und die Verteilung deiner App brauchst.  
+
+💡 **Kombination möglich**: Electron Forge kann **electron-builder als Plugin** nutzen, um die besten Features beider Tools zu vereinen! 🚀
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br>
+<br><br>
+
+
 ## electron-builder
 - https://www.npmjs.com/package/electron-builder
 - https://www.electron.build/
 
+
+
+<details><summary>Click to expand..</summary>
+
+1. You can create a configuration file electron-builder.yml for electron-builder with the content below.
+```yaml
+appId: com.electron.app
+productName: vue-ts
+directories:
+  buildResources: build
+files:
+  - '!**/.vscode/*'
+  - '!src/*'
+  - '!electron.vite.config.{js,ts,mjs,cjs}'
+  - '!{.eslintignore,.eslintrc.cjs,.prettierignore,.prettierrc.yaml,dev-app-update.yml,CHANGELOG.md,README.md}'
+  - '!{.env,.env.*,.npmrc,pnpm-lock.yaml}'
+  - '!{tsconfig.json,tsconfig.node.json,tsconfig.web.json}'
+asarUnpack:
+  - resources/**
+afterSign: build/notarize.js
+win:
+  executableName: vue-ts
+nsis:
+  artifactName: ${name}-${version}-setup.${ext}
+  shortcutName: ${productName}
+  uninstallDisplayName: ${productName}
+  createDesktopShortcut: always
+mac:
+  entitlementsInherit: build/entitlements.mac.plist
+  extendInfo:
+    - NSCameraUsageDescription: Application requests access to the device's camera.
+    - NSMicrophoneUsageDescription: Application requests access to the device's microphone.
+    - NSDocumentsFolderUsageDescription: Application requests access to the user's Documents folder.
+    - NSDownloadsFolderUsageDescription: Application requests access to the user's Downloads folder.
+dmg:
+  artifactName: ${name}-${version}.${ext}
+linux:
+  target:
+    - AppImage
+    - snap
+    - deb
+  maintainer: electronjs.org
+  category: Utility
+appImage:
+  artifactName: ${name}-${version}.${ext}
+npmRebuild: false
+publish:
+  provider: generic
+  url: https://example.com/auto-updates
+```
+
+2. Add the scripts key to the package.json:
+```javascript
+"scripts": {
+  "build:win": "npm run build && electron-builder --win --config",
+  "build:mac": "npm run build && electron-builder --mac --config",
+  "build:linux": "npm run build && electron-builder --linux --config"
+}
+```
+
+
+
+</details>
+
+
+
+
+
+
+
+
+
+
+
+<br><br>
+<br><br>
+
+
+
+## Electron Forge 
+- https://www.electronforge.io/
+
+
+<details><summary>Click to expand..</summary>
+
+1. You can create a configuration file forge.config.cjs for Electron Forge with the content below.
+```javascript
+module.exports = {
+  packagerConfig: {
+    ignore: [
+      /^\/src/,
+      /(.eslintrc.json)|(.gitignore)|(electron.vite.config.ts)|(forge.config.cjs)|(tsconfig.*)/,
+    ],
+  },
+  rebuildConfig: {},
+  makers: [
+    {
+      name: '@electron-forge/maker-squirrel',
+      config: {},
+    },
+    {
+      name: '@electron-forge/maker-zip',
+      platforms: ['darwin'],
+    },
+    {
+      name: '@electron-forge/maker-deb',
+      config: {},
+    },
+    {
+      name: '@electron-forge/maker-rpm',
+      config: {},
+    },
+  ],
+};
+```
+
+2. Add the scripts and dependencies to the package.json:
+```javascript
+"main": "./dist/main/index.js",
+"scripts": {
+  "start": "electron-vite preview --outDir=dist",
+  "dev": "electron-vite dev --outDir=dist",
+  "package": "electron-vite build --outDir=dist && electron-forge package",
+  "make ": "electron-vite build --outDir=dist && electron-forge make"
+},
+"devDependencies": {
+  "@electron-forge/cli": "^6.2.1",
+  "@electron-forge/maker-deb": "^6.2.1",
+  "@electron-forge/maker-rpm": "^6.2.1",
+  "@electron-forge/maker-squirrel": "^6.2.1",
+  "@electron-forge/maker-zip": "^6.2.1",
+}
+```
+
+
+  
+</details>
 
 
 
