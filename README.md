@@ -1087,6 +1087,149 @@ app.whenReady().then(fn);
 
 
 
+<br><br>
+<br><br>
+<br><br>
+<br><br>
+
+## contextBridge
+- https://www.electronjs.org/docs/latest/api/context-bridge
+- Create a safe, bi-directional, synchronous bridge across isolated contexts
+
+
+<details><summary>Click to expand..</summary>
+
+# Electron.js Cheat Sheet: Context Bridge
+
+## Was ist `contextBridge`?
+
+Die `contextBridge` API von Electron ermöglicht eine sichere Kommunikation zwischen der **Main Process** und der **Renderer Process**, indem sie eine kontrollierte Schnittstelle für den Zugriff auf Node.js-Funktionen bereitstellt.
+
+## Warum `contextBridge` nutzen?
+
+- **Verhindert direkte Node.js-Zugriffe** im Renderer (bessere Sicherheit)
+- **Ermöglicht eine sichere IPC-Kommunikation** zwischen Main und Renderer
+- **Schützt vor unsicheren Code-Einschleusungen** (z. B. durch `remote`)
+
+---
+
+## Beispiel: Sichere Kommunikation mit `contextBridge`
+
+### 1. **Preload-Skript (preload.js)**
+Hier definieren wir eine `window.api` Schnittstelle, die vom Renderer sicher genutzt werden kann.
+
+```javascript
+const { contextBridge, ipcRenderer } = require('electron');
+
+contextBridge.exposeInMainWorld('api', {
+  sendMessage: (channel, data) => ipcRenderer.send(channel, data),
+  onMessage: (channel, callback) => ipcRenderer.on(channel, (event, ...args) => callback(...args))
+});
+```
+
+---
+
+### 2. **Main Process (main.js)**
+Hier reagieren wir auf IPC-Events, die vom Renderer über `contextBridge` gesendet werden.
+
+```javascript
+const { app, BrowserWindow, ipcMain } = require('electron');
+
+let mainWindow;
+
+app.whenReady().then(() => {
+  mainWindow = new BrowserWindow({
+    width: 800,
+    height: 600,
+    webPreferences: {
+      preload: __dirname + '/preload.js',
+      contextIsolation: true, // Muss aktiviert sein
+      enableRemoteModule: false, // Empfohlen zur Sicherheit - Should be default in latest versions
+      nodeIntegration: false // Kein direkter Zugriff auf Node.js
+    }
+  });
+
+  mainWindow.loadURL('file://' + __dirname + '/index.html');
+});
+
+ipcMain.on('message-from-renderer', (event, data) => {
+  console.log('Nachricht vom Renderer:', data);
+  event.reply('reply-from-main', 'Antwort vom Main-Prozess');
+});
+```
+
+---
+
+### 3. **Renderer Process (index.html + script.js)**
+Hier nutzen wir die `window.api`-Schnittstelle, um mit dem Main Process zu kommunizieren.
+
+```html
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Electron ContextBridge</title>
+</head>
+<body>
+  <button id="send">Nachricht senden</button>
+  <p id="response"></p>
+
+  <script>
+    document.getElementById('send').addEventListener('click', () => {
+      window.api.sendMessage('message-from-renderer', 'Hallo Main!');
+    });
+
+    window.api.onMessage('reply-from-main', (response) => {
+      document.getElementById('response').innerText = response;
+    });
+  </script>
+</body>
+</html>
+```
+
+---
+
+## Fazit
+
+✅ `contextBridge` verbessert die Sicherheit, indem es eine isolierte API für Renderer bereitstellt.  
+✅ Es verhindert unsicheren direkten Zugriff auf Node.js im Renderer.  
+✅ Die Kombination mit `ipcRenderer` und `ipcMain` ermöglicht eine sichere Kommunikation.  
+
+Nutze **`contextBridge`** immer, wenn der Renderer mit dem Main Process interagieren muss! 🚀
+
+
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
