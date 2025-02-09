@@ -66,6 +66,25 @@ ___
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <br><br>
 <br><br>
 ________
@@ -78,6 +97,14 @@ ________
 <details><summary>Click to expand..</summary>
 
 
+
+
+
+<br><br>
+<br><br>
+
+# Framework
+
 ## electron-vite
 - https://electron-vite.org/guide/
 
@@ -86,8 +113,53 @@ ________
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
 <br><br>
 <br><br>
+
+
+# Distrubution
+
+## electron-builder
+- https://www.npmjs.com/package/electron-builder
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br>
+<br><br>
+
+# Hot-Reload
 
 ## electron-reloader (HOT Reload)
 - **It is recommended to use electron-vite instead which supports hot reload**
@@ -144,10 +216,10 @@ Then as usually run npm start:
 <br><br>
 <br><br>
 
+# Storage
 
 
-
-# electron-store
+## electron-store
 
 <details><summary>Click to expand..</summary>
 
