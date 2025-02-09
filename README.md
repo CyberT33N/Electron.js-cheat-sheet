@@ -90,6 +90,10 @@ ________
 <br><br>
 
 ## electron-reloader (HOT Reload)
+- **It is recommended to use electron-vite instead which supports hot reload**
+
+<details><summary>Click to expand..</summary>
+
 - Add to your main file:
 ```javascript
 // Enable hot reload for development
@@ -108,6 +112,161 @@ Then as usually run npm start:
     "dev": "DISPLAY=:0 electron . --no-sandbox --inspect"
   },
 ```
+
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# electron-store
+
+<details><summary>Click to expand..</summary>
+
+## 📦 Installation
+```bash
+npm install electron-store
+```
+
+## 💡 Funktionsweise
+- Speichert automatisch die Fensterposition und -größe
+- Stellt die letzte Position beim Neustart wieder her
+- Verwendet `electron-store` für persistente Speicherung
+- Reagiert auf 'resize' und 'move' Events
+
+## 🔧 Implementierung
+
+```javascript
+import { BrowserWindow, ipcMain, screen } from 'electron'
+import Store from 'electron-store'
+import path from 'path'
+
+export class WindowManager {
+    constructor(isDev, preloadPath) {
+        this.mainWindow = null
+        this.isDev = isDev
+        this.preloadPath = preloadPath
+        // Store-Instanz initialisieren
+        this.store = new Store()
+    }
+
+    createWindow() {
+        const primaryDisplay = screen.getPrimaryDisplay()
+        const { width, height } = primaryDisplay.workAreaSize
+
+        // Gespeicherte Fensterposition laden
+        const windowBounds = this.store.get('windowBounds', {
+            width: width,
+            height: height,
+            x: undefined,
+            y: undefined
+        })
+
+        // Fenster mit gespeicherten Bounds erstellen
+        this.mainWindow = new BrowserWindow({
+            ...windowBounds,
+            frame: false,
+            webPreferences: {
+                nodeIntegration: false,
+                contextIsolation: true,
+                preload: this.preloadPath
+            }
+        })
+
+        // Position bei Änderungen speichern
+        ['resize', 'move'].forEach(eventName => {
+            this.mainWindow.on(eventName, () => {
+                const bounds = this.mainWindow.getBounds()
+                this.store.set('windowBounds', bounds)
+            })
+        })
+
+        // ... Rest der Methode
+    }
+}
+```
+
+## 📝 Wichtige Komponenten
+
+### 1. Store Initialisierung
+```javascript
+import Store from 'electron-store'
+this.store = new Store()
+```
+
+### 2. Fensterposition Laden
+```javascript
+const windowBounds = this.store.get('windowBounds', {
+    width: width,
+    height: height,
+    x: undefined,
+    y: undefined
+})
+```
+
+### 3. Position Speichern
+```javascript
+['resize', 'move'].forEach(eventName => {
+    this.mainWindow.on(eventName, () => {
+        const bounds = this.mainWindow.getBounds()
+        this.store.set('windowBounds', bounds)
+    })
+})
+```
+
+## 🔍 Gespeicherte Daten
+Die Fensterdaten werden in folgendem Format gespeichert:
+```javascript
+{
+    windowBounds: {
+        width: number,    // Fensterbreite
+        height: number,   // Fensterhöhe
+        x: number,       // horizontale Position
+        y: number        // vertikale Position
+    }
+}
+```
+
+## 💪 Vorteile
+- Automatische Persistenz
+- Nahtlose Benutzererfahrung
+- Einfache Implementation
+- Kein manuelles State Management nötig
+
+## 🚀 Verwendung
+Einfach die `WindowManager`-Klasse instanziieren und `createWindow()` aufrufen - der Rest geschieht automatisch!
+
+
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </details>
 
