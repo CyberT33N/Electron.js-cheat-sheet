@@ -134,7 +134,7 @@ ________
 
 ## electron-builder
 - https://www.npmjs.com/package/electron-builder
-
+- https://www.electron.build/
 
 
 
@@ -1666,6 +1666,58 @@ win.on('closed', () => {
 
 
 </details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br>
+<br><br>
+___
+<br><br>
+<br><br>
+
+
+
+
+# Distrubution
+
+
+<details><summary>Click to expand..</summary>
+
+
+
+## electron-builder
+- https://www.npmjs.com/package/electron-builder
+- https://www.electron.build/
+
+
 
 
 
