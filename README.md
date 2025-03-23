@@ -85,6 +85,68 @@ ___
 
 
 
+
+<br><br>
+<br><br>
+________
+________
+<br><br>
+<br><br>
+
+# Debugging
+
+<details><summary>Click to expand..</summary>
+
+# Chrome Extensions
+
+<details><summary>Click to expand..</summary>
+
+
+You can use:
+- https://github.com/MarshallOfSound/electron-devtools-installer
+
+Or for local import:
+```typescript
+try {
+    const extensionPathBrowserTools = path.join(__dirname, '../../chrome-extension/browser-tools')
+    await session.defaultSession.loadExtension(extensionPathBrowserTools, {
+        allowFileAccess: true
+    })
+
+    console.info('Extension geladen')
+} catch (err) {
+    console.error('Fehler beim Laden der Extension:', err)
+}
+```
+
+</details>
+
+
+
+
+
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <br><br>
 <br><br>
 ________
