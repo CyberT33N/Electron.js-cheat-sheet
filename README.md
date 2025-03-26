@@ -2126,6 +2126,82 @@ module.exports = {
 
 
 
+<br><br>
+<br><br>
+___
+<br><br>
+<br><br>
+
+
+
+
+
+# Testing
+
+<details><summary>Click to expand..</summary>
+
+
+
+
+
+<br><br>
+<br><br>
+
+
+# E2E testing
+
+
+<details><summary>Click to expand..</summary>
+
+# Playwright
+- https://playwright.dev/docs/api/class-electron
+
+</details>
+
+
+
+
+
+
+
+
+<br><br>
+<br><br>
+
+
+# Unit testing
+
+
+<details><summary>Click to expand..</summary>
+
+# Mocking
+hen you write unit test and try to run something like `ìmport { app } from electron`. This will not work because you must mock everything from electron
+  - https://stackoverflow.com/a/38550760/8822860
+  - https://stackoverflow.com/a/38550760/8822860
+
+</details>
+
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -2162,6 +2238,35 @@ ___
 sudo chown root:root node_modules/electron/dist/chrome-sandbox && sudo chmod 4755 node_modules/electron/dist/chrome-sandbox
 ```
 - Related to (https://electron-vite.org/guide/cli#preview-options) `The --noSandbox option will force Electron run without sandboxing. It is commonly used to enable Electron to run as root on Linux.`
+
+
+<br><br>
+<br><br>
+
+# Error
+
+<details><summary>Click to expand..</summary>
+
+# The requested module 'electron' is a CommonJS module, which
+may not support all module.exports as named exports.
+```plaintext
+SyntaxError: Named export 'BrowserWindow' not found. The requested module 'electron' is a CommonJS module, which
+may not support all module.exports as named exports.
+CommonJS modules can always be imported via the default export, for example using:
+
+import pkg from 'electron';
+const { app, session, ipcMain, BrowserWindow } = pkg;
+```
+- This will mostly happen, when you try to load the electron packages outside of the electron context. This means e.g. when you write unit test and try to run something like `ìmport { app } from electron`. This will not work because you must mock everything from electron
+  - https://stackoverflow.com/a/38550760/8822860
+  - https://stackoverflow.com/a/38550760/8822860
+
+</details>
+
+
+
+
+
   
 </details>
 
