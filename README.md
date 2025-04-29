@@ -309,8 +309,7 @@ before loading it into Electron.
 # Distrubution
 
 ## electron-builder
-- https://www.npmjs.com/package/electron-builder
-- https://www.electron.build/
+- https://github.com/CyberT33N/electron-builder-cheat-sheet
 
 
 
