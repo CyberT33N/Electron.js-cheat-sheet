@@ -2154,6 +2154,23 @@ ___
 
 # Playwright
 - https://playwright.dev/docs/api/class-electron
+- https://www.electronjs.org/es/docs/latest/tutorial/automated-testing
+
+<details><summary>Click to expand..</summary>
+
+# Install
+```
+# Windows
+set PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1; npm install --save-dev playwright
+
+# Linux
+npm install --save-dev @playwright/test
+```
+  
+
+</details>
+
+
 
 </details>
 
