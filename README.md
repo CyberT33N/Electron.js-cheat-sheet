@@ -2158,14 +2158,109 @@ ___
 
 <details><summary>Click to expand..</summary>
 
-# Install
+# 📦 Installation
 ```
 # Windows
-set PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1; npm install --save-dev playwright
+set PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1; npm install --save-dev playwright  @playwright/test
 
 # Linux
-npm install --save-dev @playwright/test
+PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 npm install --save-dev playwright  @playwright/test
+
 ```
+
+
+## 🚀 App starten
+
+```js
+const { _electron: electron } = require('playwright');
+const { test } = require('@playwright/test');
+
+test('launch app', async () => {
+  const electronApp = await electron.launch({ args: ['main.js'] });
+  await electronApp.close();
+});
+```
+
+---
+
+## 🔍 Main Process Zugriff
+
+```js
+test('get isPackaged', async () => {
+  const electronApp = await electron.launch({ args: ['main.js'] });
+
+  const isPackaged = await electronApp.evaluate(async ({ app }) => {
+    return app.isPackaged;
+  });
+
+  console.log(isPackaged); // false in Dev-Mode
+  await electronApp.close();
+});
+```
+
+---
+
+## 🖼️ Screenshot der ersten Window
+
+```js
+test('save screenshot', async () => {
+  const electronApp = await electron.launch({ args: ['main.js'] });
+  const window = await electronApp.firstWindow();
+
+  await window.screenshot({ path: 'intro.png' });
+  await electronApp.close();
+});
+```
+
+---
+
+## ✅ Komplettes Testbeispiel
+
+`example.spec.js`
+
+```js
+const { _electron: electron } = require('playwright');
+const { test, expect } = require('@playwright/test');
+
+test('example test', async () => {
+  const electronApp = await electron.launch({ args: ['.'] });
+
+  const isPackaged = await electronApp.evaluate(async ({ app }) => {
+    return app.isPackaged;
+  });
+
+  expect(isPackaged).toBe(false);
+
+  const window = await electronApp.firstWindow();
+  await window.screenshot({ path: 'intro.png' });
+
+  await electronApp.close();
+});
+```
+
+---
+
+## 🧪 Tests ausführen
+
+```bash
+npx playwright test
+```
+
+🟢 Beispielausgabe:
+
+```
+✓  example.spec.js:4:1 › example test (1s)
+```
+
+> Playwright sucht standardmäßig nach Dateien im Muster: `.*(test|spec)\.(js|ts|mjs)`
+
+---
+
+## 📚 Weitere Ressourcen
+
+* [📖 Electron Support Docs](https://playwright.dev/docs/api/class-electronapplication)
+* [🧪 Third-Party Test Runner Guide](https://playwright.dev/docs/test-runners)
+
   
 
 </details>
