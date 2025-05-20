@@ -2246,13 +2246,59 @@ test('example test', async () => {
 npx playwright test
 ```
 
-🟢 Beispielausgabe:
 
-```
-✓  example.spec.js:4:1 › example test (1s)
-```
 
-> Playwright sucht standardmäßig nach Dateien im Muster: `.*(test|spec)\.(js|ts|mjs)`
+## 📦 `electron.launch(options?)`
+
+### 🔧 Options (optional)
+
+| Option              | Type                                                                                         | Description                               |
+| ------------------- | -------------------------------------------------------------------------------------------- | ----------------------------------------- |
+| `args`              | `string[]`                                                                                   | Main script args (e.g. `['main.js']`)     |
+| `cwd`               | `string`                                                                                     | Working directory                         |
+| `env`               | `Record<string, string>`                                                                     | Environment vars (`process.env` default)  |
+| `executablePath`    | `string`                                                                                     | Custom Electron binary path               |
+| `acceptDownloads`   | `boolean`                                                                                    | Auto-accept attachments (default: `true`) |
+| `bypassCSP`         | `boolean`                                                                                    | Bypass CSP (default: `false`)             |
+| `colorScheme`       | `"light" \| "dark" \| "no-preference" \| null`                                               | Emulates media feature                    |
+| `extraHTTPHeaders`  | `Record<string, string>`                                                                     | Extra HTTP headers                        |
+| `geolocation`       | `{ latitude: number, longitude: number, accuracy?: number }`                                 | Fake location                             |
+| `httpCredentials`   | `{ username: string, password: string, origin?: string, send?: 'unauthorized' \| 'always' }` | HTTP Auth                                 |
+| `ignoreHTTPSErrors` | `boolean`                                                                                    | Ignore HTTPS errors (default: `false`)    |
+| `locale`            | `string`                                                                                     | e.g. `en-GB`, `de-DE`                     |
+| `offline`           | `boolean`                                                                                    | Emulate offline (default: `false`)        |
+| `recordHar`         | `object`                                                                                     | HAR file recording                        |
+| `recordVideo`       | `{ dir: string, size?: { width: number, height: number } }`                                  | Video recording                           |
+| `timeout`           | `number`                                                                                     | Launch timeout in ms (default: `30000`)   |
+| `timezoneId`        | `string`                                                                                     | Change time zone                          |
+| `tracesDir`         | `string`                                                                                     | Save traces here                          |
+
+---
+
+## 🧪 Common Methods
+
+| Method                      | Description                        |
+| --------------------------- | ---------------------------------- |
+| `electron.launch()`         | Starts Electron with given options |
+| `electronApp.evaluate()`    | Run JS in main process             |
+| `electronApp.firstWindow()` | Gets the first created window      |
+| `window.title()`            | Gets title of the window           |
+| `window.screenshot()`       | Saves screenshot                   |
+| `window.click(selector)`    | Clicks element                     |
+| `window.on('console', cb)`  | Listen to console events           |
+| `electronApp.close()`       | Terminates the app                 |
+
+---
+
+## 🗂️ Tips
+
+* Console logs from Electron's renderer can be piped directly via:
+
+  ```js
+  window.on('console', console.log);
+  ```
+* Always `await browserContext.close()` to flush HAR/Video/Trace.
+
 
 ---
 
