@@ -2372,6 +2372,9 @@ test.describe('Recording Session', () => {
 
 </details>
 
+</details>
+
+</details>
 
 
 
