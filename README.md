@@ -2370,13 +2370,6 @@ test.describe('Recording Session', () => {
 
 
 
-
-
-
-</details>
-
-
-
 </details>
 
 
@@ -2408,13 +2401,13 @@ test.describe('Recording Session', () => {
 <details><summary>Click to expand..</summary>
 
 # Mocking
-hen you write unit test and try to run something like `ìmport { app } from electron`. This will not work because you must mock everything from electron
+Then you write unit test and try to run something like `ìmport { app } from electron`. This will not work because you must mock everything from electron
   - https://stackoverflow.com/a/38550760/8822860
   - https://stackoverflow.com/a/38550760/8822860
 
 </details>
 
-
+</details>
 
 
 
