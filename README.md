@@ -2309,6 +2309,70 @@ npx playwright test
 
   
 
+
+
+
+
+
+
+
+
+<br><br>
+<br><br>
+
+
+## Test generator
+- https://playwright.dev/docs/codegen
+
+<details><summary>Click to expand..</summary>
+
+
+# Option 1 - Playwright inspector
+- Usefully for e.g. electron apps
+
+1. Create record.spec.ts
+```
+// In a test file, e.g., test/e2e/record-my-feature.e2e.ts
+import { test } from '@playwright/test'
+import { AppSetup } from './app.base.setup.ts'
+
+test.describe('Recording Session', () => {
+    let appSetup: AppSetup
+
+    test.beforeAll(async() => {
+        appSetup = new AppSetup(/* pass pvs if needed */)
+        await appSetup.init() // This launches Electron, and it loads your UI
+    })
+
+    test.afterAll(async() => {
+        await appSetup.close()
+    })
+
+    test.only('Record interactions here', async() => {
+        // The webServer from playwright.config.ts has started your Vite server.
+        // appSetup.init() has launched Electron, and Electron has loaded the UI.
+        
+        // Now, pause to open the Playwright Inspector connected to the Electron window
+        await appSetup.page.pause() 
+
+        // After you're done recording with the inspector, you can stop the test.
+        // The recorded steps will appear in the Inspector window.
+    })
+})
+```
+
+2. The Playwright Inspector window will also appear due to await appSetup.page.pause();
+   
+3. Use the "Record" button in the Playwright Inspector (not the browser extension).
+  
+
+
+
+
+
+
+
+
 </details>
 
 
