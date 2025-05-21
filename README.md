@@ -2302,6 +2302,105 @@ npx playwright test
 
 ---
 
+## Clean Start
+- Die folgmäßig wird immer die gleiche Elektroneninstanz benutzt und daher werden Cookies usw. gespeichert. Für einen **clean Start** können wir Folgendes machen:
+```typescript
+// ===== Imports =====
+import * as fs from 'fs'
+import * as os from 'os'
+import * as path from 'path'
+import { _electron as electron, type ElectronApplication, type Page } from '@playwright/test'
+import dotenv from 'dotenv'
+
+// Load environment variables
+dotenv.config() // Load default .env
+dotenv.config({ path: '.env.e2e', override: true }) // Load .env.e2e
+
+/** This class is used to setup the app for the tests.
+ * @author test
+ * @version 1.0.0
+ * @since 2025-05-21
+ */
+export class AppSetup {
+    private static readonly _buildedAppPathConst: string = 'out/main/index.js'
+
+    public electronApp!: ElectronApplication
+    public page!: Page
+    public readonly patientenTableSelector: string = 'div.ag-center-cols-container'
+    public readonly calendarViewSelector: string = 'div#daily-timeline.mbsc-eventcalendar'
+    public readonly pvs: string = 'dampsoft'
+    public readonly user: string = 'TEST'
+    private _tempUserDataPath: string | null = null
+
+    public constructor(pvs = 'dampsoft') {
+        this.pvs = pvs
+    }
+
+    /** This method initializes the electron app
+     * @returns {Promise<void>}
+    */
+    public async init(): Promise<void> {
+        this._tempUserDataPath = path.join(os.tmpdir(), `test-playwright-electron-${String(Date.now())}`)
+        // Ensure the directory exists, Electron might create it, but it's safer to ensure.
+        // fs.mkdirSync(this._tempUserDataPath, { recursive: true }); // Electron usually handles this.
+
+        this.electronApp = await electron.launch({
+            args: [`--user-data-dir=${this._tempUserDataPath}`, AppSetup._buildedAppPathConst],
+            env: {
+                ...process.env,
+                // eslint-disable-next-line @typescript-eslint/naming-convention
+                ELECTRON_ENABLE_LOGGING: '1',
+                PVS: this.pvs // Use the instance PVS property
+            }
+        })
+
+        this.page = await this.electronApp.firstWindow()
+        await this.page.setViewportSize({ width: 1920, height: 1080 })
+    }
+
+    /** This method returns true if the app is packaged
+     * @returns {Promise<boolean>}
+    */
+    public async getIsPackaged(): Promise<boolean> {
+        // eslint-disable-next-line @typescript-eslint/prefer-readonly-parameter-types
+        return this.electronApp.evaluate(({ app }) => {
+            // This code runs in the Electron main process
+            return app.isPackaged
+        })
+    }
+
+    /** This method ensures the patients page is loaded
+     * @returns {Promise<void>}
+    */
+    public async ensurePatientsLoaded(): Promise<void> {
+        await this.page.waitForSelector(this.patientenTableSelector, { state: 'visible', timeout: 15000 })
+    }
+
+    /** This method ensures the appointments page is loaded
+     * @returns {Promise<void>}
+    */
+    public async ensureAppointmentsPageLoaded(): Promise<void> {
+        await this.page.waitForSelector(this.calendarViewSelector, { state: 'visible', timeout: 15000 })
+    }
+
+    /** This method closes the electron app
+     * @returns {Promise<void>}
+    */
+    public async close(): Promise<void> {
+        await this.electronApp.close()
+        if (typeof this._tempUserDataPath === 'string' && fs.existsSync(this._tempUserDataPath)) {
+            try {
+                fs.rmSync(this._tempUserDataPath, { recursive: true, force: true })
+            } catch (error) {
+                console.error(`Failed to remove temp user data dir: ${this._tempUserDataPath}`, error)
+            }
+        }
+    }
+}
+```
+
+---
+
 ## 📚 Weitere Ressourcen
 
 * [📖 Electron Support Docs](https://playwright.dev/docs/api/class-electronapplication)
@@ -2393,6 +2492,23 @@ test.describe('Recording Session', () => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<br><br>
+<br><br>
+______
 
 <br><br>
 <br><br>
