@@ -2599,7 +2599,17 @@ ___
 
 # Unpack
 
-## Method 1 (Windows)
+## Method 1
+```
+npx @electron/asar extract app.asar <destfolder>
+```
+- You can do npm i -g asar
+
+
+<br><br>
+<br><br>
+
+## Method 2 (Windows)
 - https://www.tc4shell.com/en/7zip/asar/
 
 1. Create Folder Formats in C:\Program Files\7-Zip\Formats and copy there the dlls files
