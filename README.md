@@ -2582,6 +2582,46 @@ Then you write unit test and try to run something like `ìmport { app } from ele
 
 
 
+<br><br>
+<br><br>
+___
+<br><br>
+<br><br>
+
+
+
+
+
+
+# Asar
+
+<details><summary>Click to expand..</summary>
+
+# Unpack
+
+## Method 1 (Windows)
+- https://www.tc4shell.com/en/7zip/asar/
+
+1. Create Folder Formats in C:\Program Files\7-Zip\Formats and copy there the dlls files
+
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 <br><br>
