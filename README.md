@@ -2603,7 +2603,20 @@ ___
 ```
 npx @electron/asar extract app.asar <destfolder>
 ```
-- You can do npm i -g asar
+
+**Option 2 – asar global installieren:**
+
+```bash
+npm install -g @electron/asar
+```
+
+Dann:
+
+```bash
+asar extract app.asar tmp
+```
+
+
 
 
 <br><br>
